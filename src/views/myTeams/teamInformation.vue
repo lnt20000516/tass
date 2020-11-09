@@ -50,12 +50,12 @@
       </div>
       <div class="table">
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="avatar" width="50">
+          <el-table-column prop="avatar" width="80" align="center">
             <template slot-scope="scope">
               <img :src="scope.row.avatar" class="avatar" />
             </template>
           </el-table-column>
-          <el-table-column prop="name" width="180">
+          <el-table-column prop="name" width="200" align="center">
             <template slot-scope="scope">
               <div class="member-name flex-col">
                 <p class="handle">
@@ -64,18 +64,121 @@
                 <p class="name">
                   {{ scope.row.name }}
                 </p>
-                
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="delveloper"> </el-table-column>
-          <el-table-column prop="date"> </el-table-column>
-          <el-table-column prop="cost">
+          <el-table-column prop="delveloper" width="100" align="center">
+          </el-table-column>
+          <el-table-column prop="date" width="150" align="center">
+          </el-table-column>
+          <el-table-column prop="cost" width="100" align="center">
             <template slot-scope="scope"> ${{ scope.row.cost }} </template>
           </el-table-column>
-          <el-table-column prop="skill">
+          <el-table-column prop="skill" width="270" align="center">
             <template slot-scope="scope">
-              
+              <div class="flex-col skill">
+                <div class="flex-row">
+                  <el-progress
+                    :percentage="scope.row.percentage"
+                    :color="customColor"
+                    :show-text="false"
+                    :stroke-width="8"
+                  ></el-progress>
+                  <p class="pro-text">
+                    {{ scope.row.percentage }}% SKILL MATCHED
+                  </p>
+                </div>
+                <p class="skills">
+                  Skill 01, Skill 02, Skill 03 and <span> 5 more</span>
+                </p>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="star" width="80" align="center">
+            <template slot-scope="scope">
+              <div class="flex-row">
+                <img src="../../assets/svg/star.svg" alt="" />
+                <span style="margin-left: 5px; font-weight: bold">
+                  {{ scope.row.star }}</span
+                >
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" min-width="150">
+            <template slot-scope="scope">
+              <el-dropdown trigger="click" @command="handleCommand">
+                <el-button type="primary">
+                  ACTIONS<i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    icon="el-icon-delete"
+                    :command="composeValue('delete', scope)"
+                    >Delete</el-dropdown-item
+                  >
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="pagination flex-row">
+        <el-dropdown trigger="click">
+          <el-button type="primary"> show more </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>5条/页</el-dropdown-item>
+            <el-dropdown-item>10条/页</el-dropdown-item>
+            <el-dropdown-item>15条/页</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <div class="pagButton flex-row">
+          <div
+            class="pag-item flex-row"
+            :class="{ active: currentPage == i }"
+            v-for="i in total"
+            :key="i"
+            @click="currentPage = i"
+          >
+            <span>{{ i }}</span>
+          </div>
+          <div
+            class="pag-item flex-row"
+            style="border-radius: 15px; width: 74px; height: 30px"
+          >
+            <span class="flex-row"
+              >NEXT <img src="../../assets/svg/right.svg" alt=""
+            /></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="member-table">
+      <div class="top flex-row">
+        <p class="title">OPEN POSITIONS</p>
+      </div>
+      <div class="table">
+        <el-table :data="developerData" style="width: 100%">
+          <el-table-column prop="name" width="400" align="center">
+            <template>
+              <div class="flex-col skill">
+                <p>Java Developer</p>
+                <p class="skills">
+                  Skill 01, Skill 02, Skill 03 and <span> 5 more</span>
+                </p>
+              </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="date" width="150" align="center">
+          </el-table-column>
+          <el-table-column prop="cost" width="100" align="center">
+            <template slot-scope="scope"> ${{ scope.row.cost }} </template>
+          </el-table-column>
+          <el-table-column prop="introduce" width="100" align="center">
+          </el-table-column>
+          <el-table-column align="center" min-width="150">
+            <template>
+              <el-button type="primary"> SELECT CANDIDATES </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -90,6 +193,7 @@ export default {
       teamName: "TEAM NAME 001",
       rate: 3.7,
       search: "",
+      customColor: "#0AB88A",
       tableData: [
         {
           avatar: require("../../assets/img/avatar (1).jpg"),
@@ -98,13 +202,53 @@ export default {
           delveloper: "Delveloper",
           date: "6/15/20 - 2/15/20",
           cost: 500,
+          percentage: 80,
+          star: 4.5,
+        },
+        {
+          avatar: require("../../assets/img/avatar (1).jpg"),
+          handle: "handle",
+          name: "Firstname Lastname",
+          delveloper: "Delveloper",
+          date: "6/15/20 - 2/15/20",
+          cost: 500,
+          percentage: 80,
+          star: 4.5,
+        },
+        {
+          avatar: require("../../assets/img/avatar (1).jpg"),
+          handle: "handle",
+          name: "Firstname Lastname",
+          delveloper: "Delveloper",
+          date: "6/15/20 - 2/15/20",
+          cost: 500,
+          percentage: 80,
+          star: 4.5,
         },
       ],
+      developerData: [
+        {
+          date: "6/15/20 - 2/15/20",
+          cost: 500,
+          introduce: "Sourcing",
+        },
+      ],
+      total: 3,
+      currentPage: 1,
     };
   },
   methods: {
     toMyTeams() {
       this.$router.push("/myTeams");
+    },
+    handleCommand(command) {
+      console.log(command);
+    },
+    composeValue(item, row) {
+      return {
+        action: item,
+        row: row,
+      };
     },
   },
 };
@@ -199,6 +343,7 @@ export default {
     border-radius: 8px;
     margin-top: 30px;
     margin-left: 20px;
+
     .top {
       margin: 20px 20px 0px 20px;
       justify-content: space-between;
@@ -240,7 +385,112 @@ export default {
           text-align: left;
         }
       }
+      .pro-text {
+        color: #0ab88a;
+        font-family: Roboto;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        line-height: 16px;
+        text-align: left;
+        margin-left: 5px;
+      }
+      .skill {
+        align-items: flex-start;
+        .skills {
+          color: #2a2a2a;
+          font-family: Roboto;
+          font-size: 14px;
+          line-height: 22px;
+          span {
+            color: #0d61bf;
+          }
+        }
+      }
+      .actions {
+        background-color: #137d60;
+        border-radius: 15px;
+        width: 107px;
+        height: 30px;
+        color: #ffffff;
+        font-family: Roboto;
+        font-size: 12px;
+        justify-content: center;
+        cursor: pointer;
+      }
     }
+    .pagination {
+      margin: 0px 20px 15px 20px;
+      justify-content: space-between;
+      .pag-item {
+        background-color: #ffffff;
+        border: 1px solid #137d60;
+        border-radius: 100%;
+        width: 30px;
+        height: 30px;
+        justify-content: center;
+        color: #229174;
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: bold;
+        margin: 0px 5px;
+        cursor: pointer;
+      }
+      .active {
+        border: 1px solid #2a2a2a;
+        color: #2a2a2a;
+      }
+    }
+  }
+  .open-positions {
+    width: 95%;
+    padding: 10px 0px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-top: 30px;
+    margin-left: 20px;
+  }
+}
+</style>
+<style lang="scss">
+.table {
+  .el-progress-bar {
+    width: 40px;
+  }
+  .el-button--primary {
+    background-color: #137d60;
+    border-radius: 15px;
+    // width: 107px;
+    // height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    // padding: 0;
+    border: 0;
+    justify-content: center;
+    color: #ffffff;
+    font-family: Roboto;
+    font-size: 12px;
+  }
+  .el-table {
+    margin-bottom: 20px;
+  }
+}
+.pagination {
+  .el-button--primary {
+    background-color: #ffffff;
+    border-radius: 15px;
+    width: 109px;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    border: 1px solid #137d60;
+    justify-content: center;
+    color: #229174;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: bold;
   }
 }
 </style>

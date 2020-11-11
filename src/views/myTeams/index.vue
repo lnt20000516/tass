@@ -2,9 +2,9 @@
   <div class="my-teams">
     <p class="title">MY TEAMS</p>
     <div class="teams flex-row">
-      <div class="team-item" v-for="i in 5" :key="i">
+      <div class="team-item" v-for="(item, i) in teams" :key="i">
         <div class="top flex-row">
-          <p class="team-name" @click="toInformation">TEAM NAME 001</p>
+          <p class="team-name" @click="toInformation">{{ item.teamName }}</p>
           <el-dropdown trigger="click" placement="bottom">
             <span class="el-dropdown-link">
               <i> <img src="../../assets/svg/more.svg" /> </i>
@@ -23,42 +23,57 @@
             <img src="../../assets/svg/date.svg" alt="" />
             <div class="text flex-col">
               <p class="lable">Start - End Date</p>
-              <p class="value">6/15/20 - 12/15/20</p>
+              <p class="value">
+                {{ item.startDate | YMD }} - {{ item.endDate | YMD }}
+              </p>
             </div>
           </div>
           <div class="middle-item flex-row">
             <img src="../../assets/svg/time.svg" alt="" />
             <div class="text flex-col">
               <p class="lable">Time Remaining</p>
-              <p class="value">8 Weeks</p>
+              <p class="value">{{ item.week }} Weeks</p>
             </div>
           </div>
           <div class="middle-item flex-row">
             <img src="../../assets/svg/cost.svg" alt="" />
             <div class="text flex-col">
               <p class="lable">Weekly Cost</p>
-              <p class="value">$5,000</p>
+              <p class="value">${{ item.cost }}</p>
             </div>
           </div>
           <div class="middle-item flex-row">
             <img src="../../assets/svg/teamsLarge.svg" alt="" />
             <div class="text flex-col">
               <p class="lable">Number of Team Members</p>
-              <p class="value">10</p>
+              <p class="value">{{ item.number }}</p>
             </div>
           </div>
         </div>
         <div class="bottom flex-row" @click="toInformation">
-          <img v-for="(i, index) in imgList" :key="index" :src="i" />
-          <div class="more flex-row"><span>+6</span></div>
+          <img
+            v-for="(i, index) in item.avatarList"
+            :key="index"
+            :src="i.avatar"
+          />
+          <div class="more flex-row" v-show="item.number > 4">
+            <span>+{{item.number-item.avatarList.length}}</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
 </template>
 <script>
+import * as team from "../../api/modules/team";
+import { YMD, timeStamp } from "../../filter/dateConversion";
 export default {
+  created() {
+    this.getAllTeam();
+  },
+  filters: {
+    YMD,
+  },
   data() {
     return {
       imgList: [
@@ -67,11 +82,15 @@ export default {
         require("../../assets/img/avatar (3).jpg"),
         require("../../assets/img/avatar (4).jpg"),
       ],
+      teams: [],
     };
   },
   methods: {
     toInformation() {
       this.$router.push("/teamInformation");
+    },
+    async getAllTeam() {
+      this.teams = await team.getAllTeam();
     },
   },
 };

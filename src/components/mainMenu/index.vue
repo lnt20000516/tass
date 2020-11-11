@@ -6,6 +6,7 @@
       :collapse="isCollapse"
       active-text-color="#2A2A2A"
       @select="selectMenu"
+      router
     >
       <div class="close flex-row" v-if="!isCollapse">
         <img
@@ -21,8 +22,8 @@
           style="margin-top: 10px"
         />
       </div>
-      <el-menu-item index="1">
-        <i v-if="activeMenu == 1">
+      <el-menu-item index="myTeams">
+        <i v-if="activeMenu == 'myTeams'">
           <img src="../../assets/svg/teams-active.svg" alt="" />
         </i>
         <i v-else>
@@ -51,7 +52,7 @@ export default {
   data() {
     return {
       isCollapse: false,
-      activeMenu: "1",
+      activeMenu: "myTeams",
     };
   },
   methods: {

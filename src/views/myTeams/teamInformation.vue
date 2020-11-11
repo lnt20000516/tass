@@ -178,7 +178,9 @@
           </el-table-column>
           <el-table-column align="center" min-width="150">
             <template>
-              <el-button type="primary"> SELECT CANDIDATES </el-button>
+              <el-button type="primary" @click="toCandidates">
+                SELECT CANDIDATES
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -240,6 +242,9 @@ export default {
   methods: {
     toMyTeams() {
       this.$router.push("/myTeams");
+    },
+    toCandidates() {
+      this.$router.push("/candidates");
     },
     handleCommand(command) {
       console.log(command);
@@ -405,6 +410,7 @@ export default {
             color: #0d61bf;
           }
         }
+      
       }
       .actions {
         background-color: #137d60;
@@ -458,19 +464,24 @@ export default {
   }
   .el-button--primary {
     background-color: #137d60;
-    border-radius: 15px;
-    // width: 107px;
-    // height: 30px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    // padding: 0;
     border: 0;
-    justify-content: center;
+    border-radius: 18px;
     color: #ffffff;
     font-family: Roboto;
     font-size: 12px;
   }
+  .el-dropdown {
+    .el-button--primary {
+      width: 107px;
+      height: 30px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0;
+      justify-content: center;
+    }
+  }
+
   .el-table {
     margin-bottom: 20px;
   }

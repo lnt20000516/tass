@@ -17,6 +17,11 @@ const routes = [{
       path: "/teamInformation",
       name: "teamInformation",
       component: () => import("../views/myTeams/teamInformation")
+    },
+    {
+      path: "/candidates",
+      name: "candidates",
+      component: () => import("../views/myTeams/candidates")
     }
   ]
 }]
